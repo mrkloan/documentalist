@@ -9,7 +9,10 @@ readme = "README.md"
 python = "^3.12"
 langchain = "^0.1.9"
 chromadb = "^0.4.23"
+python-dotenv = "^1.0.1"
 
+[tool.poetry.scripts]
+chat = "documentalist.cli:chat"
 
 [build-system]
 requires = ["poetry-core"]

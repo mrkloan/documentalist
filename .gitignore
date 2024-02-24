@@ -1,2 +1,7 @@
+# IntelliJ IDEA
 .idea
 *.iml
+
+# Ollama volume
+data/
+!**/*.md

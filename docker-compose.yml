@@ -1,0 +1,19 @@
+version: '3.8'
+services:
+  init-ollama:
+    image: busybox:1.36.1
+    command: "wget --post-data '{\"name\": \"${OLLAMA_MODEL}\"}' http://ollama:11434/api/pull"
+    depends_on:
+      ollama:
+        condition: service_healthy
+  ollama:
+    image: ollama/ollama:0.1.27
+    volumes:
+      - ./data/ollama:/root/.ollama
+    ports:
+      - 11434:11434
+    healthcheck:
+      test: ollama list || exit 1
+      interval: 30s
+      timeout: 3s
+      retries: 10

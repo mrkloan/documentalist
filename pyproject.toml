@@ -12,7 +12,7 @@ chromadb = "^0.4.23"
 python-dotenv = "^1.0.1"
 
 [tool.poetry.scripts]
-chat = "documentalist.cli:chat"
+main = "documentalist.__main__:main"
 
 [build-system]
 requires = ["poetry-core"]

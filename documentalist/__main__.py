@@ -8,6 +8,7 @@ from langchain_community.llms import Ollama
 from langchain_community.vectorstores import Chroma
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import PromptTemplate
+from langchain_core.runnables import RunnableParallel
 from langchain_core.runnables import RunnablePassthrough
 
 PROMPT_TEMPLATE = """\
@@ -122,15 +123,20 @@ def chat(base_url, model, chromadb_path, collection):
         model=model
     )
     rag_chain = (
-            {"context": retriever | format_docs, "question": RunnablePassthrough()}
+            RunnablePassthrough.assign(context=(lambda x: format_docs(x["context"])))
             | rag_prompt
             | llm
             | StrOutputParser()
     )
+    sourced_rag_chain = RunnableParallel(
+        {"context": retriever, "question": RunnablePassthrough()}
+    ).assign(answer=rag_chain)
 
     prompt = click.prompt("Question")
-    answer = rag_chain.invoke(prompt)
-    click.echo(answer.strip())
+    response = sourced_rag_chain.invoke(prompt)
+    sources = set(map(lambda document: document.metadata['source'], response['context']))
+    click.echo("Answer: {:s}".format(response['answer'].strip()))
+    click.echo("Sources: {:s}".format(", ".join(sources)))
 
 
 def format_docs(docs):

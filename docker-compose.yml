@@ -11,7 +11,7 @@ services:
     volumes:
       - ./data/ollama:/root/.ollama
     ports:
-      - 11434:11434
+      - "11434:11434"
     healthcheck:
       test: ollama list || exit 1
       interval: 30s

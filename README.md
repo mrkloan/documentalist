@@ -8,6 +8,6 @@
 1. Prepare your dataset: put all the PDF documents used for training in the [`./data/dataset`](./data/dataset)
    directory.
 2. Start the Ollama container: `docker compose up -d`
-   (you can update the `OLLAMA_MODEL` environment variable defined in [`.env`](.env) in order to pull the model of your
-   choice).
+   (you can update the `OLLAMA_MODEL` environment variable defined in [`.env`](.env) in order to pull [the model of your
+   choice](https://ollama.com/library)).
 3. Create the embeddings and query your custom LLM: `poetry install && poetry run main`
